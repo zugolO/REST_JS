@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="UTF-8">
+<title>Update user</title>
+</head>
+<body>
+<form th:action="@{/admin/update}" th:object="${user}" th:method="patch">
+
+  <label for="username">Username</label>
+  <input type="text" th:field="*{username}" id="username" placeholder="Username">
+  <br/>
+  <br/>
+  <label for="Name">Name</label>
+  <input type="text" th:field="*{Name}" id="Name" placeholder="Name">
+  <br/>
+  <label for="lastname">Lastname</label>
+  <input type="text" th:field="*{lastname}" id="lastname" placeholder="Lastname">
+  <br/>
+  <label for="age">Age</label>
+  <input type="text" th:field="*{age}" id="age" placeholder="Age">
+  <br/>
+  <br/>
+  <label for="password">Password</label>
+  <input type="text" th:field="*{password}" id="password" placeholder="Password">
+  <br/>
+  <select multiple name="roles1">
+    <option th:each="role:${rolesList}" th:value="${role.getName()}"
+            th:text="${role.getName()}"></option>
+  </select>
+  <input type="submit" value="Update">
+</form>
+</body>
+</html>
