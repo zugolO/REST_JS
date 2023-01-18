@@ -1,96 +1,59 @@
 package ru.kata.spring.boot_security.demo.models;
 
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "username")
     private String username;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "lastname")
-    private String lastname;
-
-    @Column(name = "age")
-    private Integer age;
-
     @Column(name = "password")
     private String password;
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinTable(name = "users_role",
+    @Column(name = "name")
+    private String name;
+    @Column(name = "surname")
+    private String surname;
+    @Column(name = "age")
+    private Integer age;
+    @Column(name = "email")
+    private String email;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-
-
-    public User(String username, String name, String lastname, Integer age, String password, List<Role> roles) {
+    public User(String username, String password, String name, String surname, Integer age, String email, Set<ru.kata.spring.boot_security.demo.models.Role> roles) {
         this.username = username;
-        this.name = name;
-        this.lastname = lastname;
-        this.age = age;
         this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
+        this.email = email;
         this.roles = roles;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastName() {
-        return lastname;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastname = lastName;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
     }
 
     public void setUsername(String username) {
@@ -101,11 +64,43 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public List<Role> getRoles() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -119,7 +114,6 @@ public class User implements UserDetails {
         return password;
     }
 
-    @Override
     public String getUsername() {
         return username;
     }
@@ -142,18 +136,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return getId() == user.getId();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
     }
 }
