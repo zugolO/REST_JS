@@ -12,7 +12,7 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -61,12 +61,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findById(id).get();
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(String.format("User not found", username));
-        }
-        return user;
-    }
+
 }
